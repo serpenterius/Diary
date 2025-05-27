@@ -11,9 +11,17 @@ function Habits() {
     const [date, setDate] = useState('');
 
     useEffect(() => {
-        const now = new Date();
-        setDate(now.toLocaleDateString())
-        console.log(now.toLocaleDateString())
+        const now = Date.now();
+        setDate((now / 1000 / 60 / 60 / 24 % 365).toFixed(0))
+
+        const habitsCheckDate = habits.map(item => {
+            if((date - item.lastCheckmark) > 1) {
+                return {...item, streak : 0, lastCheckmark: 0}
+            } else {
+                return item
+            }
+        })
+        setHabits(habitsCheckDate);
     }, [])
 
 
@@ -46,7 +54,7 @@ function Habits() {
                     return {...item, streak: item.streak + 1, lastCheckmark: date}
                 }
             }
-            
+
             return item;
         })
         setHabits(newList);
