@@ -8,12 +8,14 @@ function Habits() {
         const stored = localStorage.getItem('habits');
         return stored ? JSON.parse(stored) : [];
     });
+    const [date, setDate] = useState('');
 
     useEffect(() => {
-        if(localStorage.getItem('habits')) {
-            console.log('Ok');
-        }
+        const now = new Date();
+        setDate(now.toLocaleDateString())
+        console.log(now.toLocaleDateString())
     }, [])
+
 
     useEffect(() => {
         localStorage.setItem('habits', JSON.stringify(habits))
@@ -23,7 +25,8 @@ function Habits() {
         let newHabit = {
             text: input.value,
             id: Date.now(),
-            streak: 0
+            streak: 0,
+            lastCheckmark: ''
         }
         setHabits([...habits, newHabit]);
         input.value = '';
@@ -37,8 +40,13 @@ function Habits() {
     const doneHabit = (id) => {
         const newList = habits.map(item => {
             if(item.id === id) {
-                return {...item, streak: item.streak + 1}
+                if(item.lastCheckmark === date) {
+                   alert('На сегодня вы уже отметили эту привычку')
+                } else {
+                    return {...item, streak: item.streak + 1, lastCheckmark: date}
+                }
             }
+            
             return item;
         })
         setHabits(newList);
