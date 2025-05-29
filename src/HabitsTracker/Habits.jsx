@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 
 import HabitsList from "./HabitsList"
 import HabitsForm from "./HabitsForm"
+import Analysis from "./Analysis";
 
 function Habits() {
     const [habits, setHabits] = useState(() => {
@@ -68,6 +69,7 @@ function Habits() {
             <HabitsList habits={habits}
                         remove={deleteHabit}
                         done={doneHabit}/>
+            <Analysis   habits={habits}/>
         </div>
     )
 }
